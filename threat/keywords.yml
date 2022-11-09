@@ -1,0 +1,42 @@
+highlight:
+    - antiwar
+    - uprising
+    - diplomacy
+    - cooperative
+    - neutralist
+    - peacemaking
+    - mediate
+    - dictatorships
+    - totalitarianism
+    - authoritarianism
+    - deterrence
+    - expansionism
+    - imperialism
+    - cyberwarfare
+    - aggression
+    - terrorism
+    - autocracy
+    - militarism
+    - empires
+    - counterinsurgency
+    - aggressors
+    - fascism
+    - autocratic
+    - firepower
+    - armies
+
+count: 
+    ideology:
+        communism: [communism, communist*]
+        fascism: [fascism, fascist*]
+        terrorism: [terrorism, terrorist*]
+        imperialism: [imperialism, imperialist*]
+        authoritarianism: [authoritarianism, authoritarian*]
+        totalitarianism: [totalitarianism, totalitarian*]
+        
+    technology:
+        nuclear: [nuclear, atomic]
+        blitzkrieg: [blitzkrieg]
+        trench: [trench*]
+        cyberwarfare: [cyber*]
+        guerrilla: [insurgenc*, counterinsurgenc*, guerrilla*]
