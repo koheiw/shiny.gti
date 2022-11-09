@@ -12,10 +12,12 @@ require(shinyBS)
 require(LSX)
 require(wireframe.lss)
 require(ggplot2)
+require(ggrepel)
+source("functions.R")
 
 lss <- readRDS("/data/edgar1/kohei/demo/data/threat/lss.RDS")
 dict_seed <- dict <- quanteda::dictionary(file = "seedwords.yml")
-default <- TRUE
+event <- yaml::read_yaml("events.yml")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -36,37 +38,66 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-           bsAlert("alert"),
-           plotOutput("plot_terms")
+            bsAlert("alert"),
+            tabsetPanel(
+                id = "tabs",
+                tabPanel(
+                    title = "Polaity words",
+                    value = "tab_terms",
+                    plotOutput("plot_terms")
+                ),
+                tabPanel(
+                    title = "Historical trends",
+                    value = "tab_documents",
+                    plotOutput("plot_documents")
+                )
+            )
         )
     )
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
     
     observeEvent(input$seedword_type, {
         type <- input$seedword_type
-        updateTextAreaInput(inputId = "seedwords_pos", value = paste(dict_seed[[type]][[1]], collapse = ", "))
-        updateTextAreaInput(inputId = "seedwords_neg", value = paste(dict_seed[[type]][[2]], collapse = ", "))
+        updateTextAreaInput(session, "seedwords_pos", value = paste(dict_seed[[type]][[1]], collapse = ", "))
+        updateTextAreaInput(session, "seedwords_neg", value = paste(dict_seed[[type]][[2]], collapse = ", "))
     })
     
     observeEvent(input$update, {
         
+        updateTabsetPanel(session, 'tabs', selected = "tab_terms")
+        closeAlert(session, alertId = "seedwords")
         
-        closeAlert(getDefaultReactiveDomain(), alertId = "ignore_seedwords")
-        #type <- input$seedword_type
-        #seed <- as.seedwords(dict_seed[[type]])
-        lis <- stringi::stri_split_fixed(c(input$seedwords_pos, input$seedwords_neg), ",")
-        seed <- as.seedwords(lapply(lis, stringi::stri_trim))
-        lss <- as.textmodel_lss(lss, seed)
+        lis <- stri_split_fixed(c(input$seedwords_pos, input$seedwords_neg), ",")
+        lis <- lapply(lis, function(x) {
+            x <- stri_trim(x)
+            x[nzchar(x)]
+        })
+        seed <- as.seedwords(lis)
+        
+        lss <- tryCatch({
+            as.textmodel_lss(lss, seed)
+        }, error = function(e) {
+            createAlert(session, anchorId = "alert", alertId = "seedwords",
+                        content = "No seed words are provided.", style = "danger", dismiss = FALSE)
+            return(NULL)
+        })
+        if (is.null(lss))
+            return()
+
         #output$warning_pos <- renderText()
         output$plot_terms <- renderPlot({
             
             ignore <- setdiff(names(seed), colnames(lss$embedding))
             if (length(ignore)) {
-                msg <- paste("Following seed words are ignored:", paste(ignore, collapse = ", "))
-                createAlert(getDefaultReactiveDomain(), anchorId = "alert", alertId = "ignore_seedwords",
+                if (length(ignore) == 1) {
+                    msg <- paste(paste0('"', ignore, '"', collapse = ", "), "is not found.")
+                } else {
+                    msg <- paste(paste0('"', ignore, '"', collapse = ", "), "are not found.")
+                }
+                createAlert(session, anchorId = "alert", alertId = "seedwords",
                             content = msg, dismiss = FALSE)
             }
             
@@ -75,13 +106,31 @@ server <- function(input, output) {
             textplot_terms(lss, c(names(lss$seeds), smp)) 
         })
         
+        output$plot_documents <- renderPlot({
+            
+            dat <- quanteda::docvars(lss$data)
+            dat$lss <- predict(lss)
+            dat_gti <- get_gti(dat)
+            plot_gti(dat_gti, event, NULL)
+        })
+        
     })
+    
+    # default plots
     output$plot_terms <- renderPlot({
 
         set.seed(1234)
         smp <- sample(names(lss$beta), 50, prob = abs(lss$beta) ^ 2) # random sample from extremes
         textplot_terms(lss, c(names(lss$seeds), smp)) 
         
+    })
+    
+    output$plot_documents <- renderPlot({
+        
+        dat <- quanteda::docvars(lss$data)
+        dat$lss <- predict(lss)
+        dat_gti <- get_gti(dat)
+        plot_gti(dat_gti, event)
     })
 }
 
