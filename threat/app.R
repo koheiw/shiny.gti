@@ -15,7 +15,7 @@ require(ggplot2)
 require(ggrepel)
 source("functions.R")
 
-lss <- readRDS("/data/edgar1/kohei/demo/data/threat/lss.RDS")
+lss <- readRDS("lss.RDS") # from /data/edgar1/kohei/demo/data/threat/lss.RDS
 dict_seed <- dict <- quanteda::dictionary(file = "seedwords.yml")
 event <- yaml::read_yaml("events.yml")
 
