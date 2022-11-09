@@ -1,0 +1,13 @@
+name: threat
+title: threat
+username:
+account: lazardlab
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7570856
+bundleId: 6492773
+url: https://lazardlab.shinyapps.io/threat/
+when: 1667982869.69404
+lastSyncTime: 1667982869.69405
+asMultiple: FALSE
+asStatic: FALSE
