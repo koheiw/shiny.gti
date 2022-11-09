@@ -10,7 +10,6 @@
 require(shiny)
 require(shinyBS)
 require(LSX)
-require(wireframe.lss)
 require(ggplot2)
 require(ggrepel)
 source("functions.R")
