@@ -44,12 +44,12 @@ ui <- fluidPage(
                 tabPanel(
                     title = "Polaity words",
                     value = "tab_terms",
-                    plotOutput("plot_terms")
+                    plotOutput("plot_terms", height = 600, width = 1000)
                 ),
                 tabPanel(
                     title = "Historical trends",
                     value = "tab_documents",
-                    plotOutput("plot_documents")
+                    plotOutput("plot_documents", height = 600, width = 1000)
                 )
             )
         )
