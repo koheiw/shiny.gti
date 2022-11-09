@@ -44,12 +44,12 @@ ui <- fluidPage(
                 tabPanel(
                     title = "Polaity words",
                     value = "tab_terms",
-                    plotOutput("plot_terms", height = 600, width = 1000)
+                    plotOutput("plot_terms", height = 500)
                 ),
                 tabPanel(
                     title = "Historical trends",
                     value = "tab_documents",
-                    plotOutput("plot_documents", height = 600, width = 1000)
+                    plotOutput("plot_documents", height = 500)
                 )
             )
         )
@@ -67,8 +67,8 @@ server <- function(input, output, session) {
     
     observeEvent(input$update, {
         
-        updateTabsetPanel(session, 'tabs', selected = "tab_terms")
         closeAlert(session, alertId = "seedwords")
+        updateTabsetPanel(session, 'tabs', selected = "tab_terms")
         
         lis <- stri_split_fixed(c(input$seedwords_pos, input$seedwords_neg), ",")
         lis <- lapply(lis, function(x) {
@@ -76,6 +76,17 @@ server <- function(input, output, session) {
             x[nzchar(x)]
         })
         seed <- as.seedwords(lis)
+        
+        ignore <- setdiff(names(seed), colnames(lss$embedding))
+        if (length(ignore)) {
+            if (length(ignore) == 1) {
+                msg <- paste(paste0('"', ignore, '"', collapse = ", "), "is not found.")
+            } else {
+                msg <- paste(paste0('"', ignore, '"', collapse = ", "), "are not found.")
+            }
+            createAlert(session, anchorId = "alert", alertId = "seedwords",
+                        content = msg, dismiss = FALSE)
+        }
         
         lss <- tryCatch({
             as.textmodel_lss(lss, seed)
@@ -89,17 +100,6 @@ server <- function(input, output, session) {
 
         #output$warning_pos <- renderText()
         output$plot_terms <- renderPlot({
-            
-            ignore <- setdiff(names(seed), colnames(lss$embedding))
-            if (length(ignore)) {
-                if (length(ignore) == 1) {
-                    msg <- paste(paste0('"', ignore, '"', collapse = ", "), "is not found.")
-                } else {
-                    msg <- paste(paste0('"', ignore, '"', collapse = ", "), "are not found.")
-                }
-                createAlert(session, anchorId = "alert", alertId = "seedwords",
-                            content = msg, dismiss = FALSE)
-            }
             
             set.seed(1234)
             smp <- sample(names(lss$beta), 50, prob = abs(lss$beta) ^ 2) # random sample from extremes
