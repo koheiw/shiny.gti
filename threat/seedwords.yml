@@ -3,7 +3,10 @@ hostility:
     low: ["aid", "aids", "friends", "friend", "ally", "allies", "peaceful"]
 democracy:
     high: democracy
-    low: autocracy
+    low: autocracy, totalitarian
+capitalism:
+    high: capitalism
+    low: communism
 religiosity:
     high: religious
     low: secular

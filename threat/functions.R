@@ -78,7 +78,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
         scale_x_continuous(limits = c(1860, 2020), breaks = seq(1860, 2020, 20)) +
         theme_light() +
         theme(text = element_text(size = 13, colour = "black"),
-              panel.border = element_rect(colour = "black", fill = NA, size = unit(1, "pt")),
+              #panel.border = element_rect(colour = "black", fill = NA, size = unit(1, "pt")),
               legend.position = "top",
               legend.text = element_text(size = 13, colour = "black"),
               axis.text = element_text(size = 13, colour = "black"), 
@@ -86,7 +86,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
               axis.text.y =  element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
               axis.title.x = element_blank(),
               axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
-              axis.ticks = element_line(colour = "black", size = unit(0.5, "pt")),
+              axis.ticks = element_line(size = unit(0.5, "pt")),
               axis.ticks.length = unit(4, "pt"),
               panel.grid.major = element_blank(), 
               panel.grid.minor = element_blank())
