@@ -36,11 +36,11 @@ ui <- fluidPage(
     sidebarLayout(
         sidebarPanel(
             selectInput("seedword_type", "Seed words", names(dict_seed)),
-            textAreaInput("seedwords_pos", "Positive", paste(dict_seed[[1]][[1]], collapse = ", ")),
-            textAreaInput("seedwords_neg", "Negative", paste(dict_seed[[1]][[2]], collapse = ", ")),
+            textAreaInput("seedwords_pos", "High", paste(dict_seed[[1]][[1]], collapse = ", ")),
+            textAreaInput("seedwords_neg", "Low", paste(dict_seed[[1]][[2]], collapse = ", ")),
             actionButton("update", "Update", icon = icon("rotate")),
             hr(),
-            selectInput("countries", "Countries", country, selected = country_def, multiple = TRUE),
+            selectInput("countries", "Countries", country_all, selected = country_def, multiple = TRUE),
             actionButton("select", "Select", icon = icon("check")),
             width = 3
         ),
@@ -51,7 +51,7 @@ ui <- fluidPage(
             tabsetPanel(
                 id = "tabs",
                 tabPanel(
-                    title = "Polaity words",
+                    title = "Polarity words",
                     value = "tab_terms",
                     plotOutput("plot_terms", height = 500)
                 ),
