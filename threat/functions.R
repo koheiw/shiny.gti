@@ -60,7 +60,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
     temp <- smooth_gti(x, sum = sum, index = "gti")
     names(temp) <- stri_trans_totitle(names(temp))
     
-    label <- data.frame()
+    label <- data.frame(Country = character(), Year = integer(), Event = character())
     for (m in names(event)) {
         label <- rbind(label, data.frame(Country = stri_trans_tolower(m),
                                          Year = unlist(event[[m]]),
@@ -80,7 +80,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
     ggplot(temp, aes(x = Year, y = Index, group = Country)) +
         ylim(0, max(temp$Index) * 1.2) +
         geom_line(na.rm = TRUE, aes(colour = Country)) +
-        geom_point(aes(y = ifelse(is.na(Event), NA, Index), colour = Country), na.rm = TRUE) +
+        geom_point(aes(y = ifelse(is.na(Event), NA_integer_, Index), colour = Country), na.rm = TRUE) +
         geom_text_repel(aes(x = Year, y = Index, label = Event, colour = Country, size = 4), 
                         na.rm = TRUE,
                         min.segment.length = 0.1,

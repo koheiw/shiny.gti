@@ -19,7 +19,8 @@ dict_seed <- quanteda::dictionary(file = "seedwords.yml")
 event <- yaml::read_yaml("events.yml")
 
 country_all <- get_country(lss)
-country_def <- c("cn", "ru")
+country_def <- c("cn", "ru", "de")
+
 #country_major <- c("de", "ru", "gb", "fr", "jp", "cn", "es")
 #country_minor <- c("ir", "iq", "af", "sy", "vn", "cu", "ca", "mx")
 
