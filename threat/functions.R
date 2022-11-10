@@ -78,7 +78,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
         ylim(0, max(temp$Index) * 1.2) +
         geom_line(na.rm = TRUE, aes(colour = Country)) +
         geom_point(aes(y = ifelse(is.na(Event), NA, Index), colour = Country), na.rm = TRUE) +
-        geom_text_repel(aes(x = Year, y = Index, label = Event, colour = Country), 
+        geom_text_repel(aes(x = Year, y = Index, label = Event, colour = Country, size = 4), 
                         na.rm = TRUE,
                         min.segment.length = 0.1,
                         nudge_y = 0.01,
@@ -93,7 +93,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
               axis.text = element_text(size = 13, colour = "black"), 
               axis.text.x =  element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
               axis.text.y =  element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-              axis.title.x = element_blank(),
+              axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0)),
               axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
               axis.ticks = element_line(size = unit(0.5, "pt")),
               axis.ticks.length = unit(4, "pt"),
@@ -101,3 +101,56 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
               panel.grid.minor = element_blank())
     
 }
+
+plot_terms <- function(x, highlighted = NULL, max_words = 10000) {
+    
+    max_words <- check_integer(max_words, min_len = 1, max_len = 1, min = 1)
+    
+    if (is.null(highlighted))
+        highlighted <- character()
+    if (is.dictionary(highlighted)) {
+        separator <- meta(highlighted, field = "separator", type = "object")
+        valuetype <- meta(highlighted, field = "valuetype", type = "object")
+        concatenator <- x$concatenator
+        highlighted <- unlist(highlighted, use.names = FALSE)
+        if (!nzchar(separator) && !is.null(concatenator)) # for backward compatibility
+            highlighted <- stri_replace_all_fixed(highlighted, separator, concatenator)
+    } else {
+        highlighted <- unlist(highlighted, use.names = FALSE)
+        valuetype <- "glob"
+    }
+    words_hl <- quanteda::pattern2fixed(
+        highlighted,
+        types = names(x$beta),
+        valuetype = valuetype,
+        case_insensitive = TRUE
+    )
+    
+    # fix for a bug before v1.1.4
+    x$frequency <- x$frequency[names(x$beta)]
+    
+    beta <- frequency <- word <- NULL
+    temp <- data.frame(word = names(x$beta), beta = x$beta, frequency = log(x$frequency),
+                       stringsAsFactors = FALSE)
+    is_hl <- temp$word %in% unlist(words_hl, use.names = FALSE)
+    is_sm <- temp$word %in% sample(temp$word, min(length(temp$word), max_words))
+    temp_black <- subset(temp, is_hl)
+    temp_gray <- subset(temp, !is_hl & is_sm)
+    ggplot(data = temp_gray, aes(x = beta, y = frequency, label = word)) +
+        geom_text(colour = "grey70", alpha = 0.7) +
+        labs(x = "Polarity", y = "Frequency (log)") +
+        theme_bw() +
+        theme(panel.grid= element_blank(),
+              axis.text = element_text(size = 13, colour = "black"), 
+              axis.text.x =  element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+              axis.text.y =  element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+              axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0)),
+              axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
+              text = element_text(size = 13, colour = "black"),
+              plot.margin = margin(t = 30)) +
+        geom_text_repel(data = temp_black, aes(x = beta, y = frequency, label = word, size = 4),
+                        segment.size = 0.25, colour = "black", show.legend = FALSE) +
+        geom_point(data = temp_black, aes(x = beta, y = frequency), cex = 0.7, colour = "black")
+    
+}
+

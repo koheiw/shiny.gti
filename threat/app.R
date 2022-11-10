@@ -111,9 +111,7 @@ server <- function(input, output, session) {
             
             set.seed(1234)
             smp <- sample(names(lss$beta), 50, prob = abs(lss$beta) ^ 2) # random sample from extremes
-            textplot_terms(lss, c(names(lss$seeds), smp)) +
-                theme(axis.text = element_text(size = 13, colour = "black"),
-                      text = element_text(size = 13, colour = "black"))
+            plot_terms(lss, c(names(lss$seeds), smp))
         })
         
         output$plot_documents <- renderPlot({
@@ -147,9 +145,7 @@ server <- function(input, output, session) {
 
         set.seed(1234)
         smp <- sample(names(lss$beta), 50, prob = abs(lss$beta) ^ 2) # random sample from extremes
-        textplot_terms(lss, c(names(lss$seeds), smp)) +
-            theme(axis.text = element_text(size = 13, colour = "black"),
-                  text = element_text(size = 13, colour = "black"))
+        plot_terms(lss, c(names(lss$seeds), smp))
         
     })
     
