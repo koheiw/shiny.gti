@@ -131,6 +131,9 @@ server <- function(input, output, session) {
     })
     
     observeEvent(input$select, {
+        
+        updateTabsetPanel(session, 'tabs', selected = "tab_documents")
+        
         if (length(input$countries)) {
             country <- input$countries
         } else {
