@@ -69,9 +69,12 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
     }
     temp <- merge(temp, label, all.x = TRUE)
     if (all(temp$Country != "all")) {
-        temp$Country <- names(country_all)[match(temp$Country, country_all)]
+        temp$Country <- factor(temp$Country, levels = country)
+        v <- names(country_all)
+        names(v) <- country_all
+        levels(temp$Country) <- v[levels(temp$Country)]
     } else {
-        temp$Country <- "All"
+        temp$Country <- factor("All")
     }
     
     ggplot(temp, aes(x = Year, y = Index, group = Country)) +
