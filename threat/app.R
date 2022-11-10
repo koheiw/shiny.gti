@@ -1,11 +1,9 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Geoplitical Threat Index web version
+
+# The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats
+# Peter Trubowitz, Kohei Watanabe
+# International Studies Quarterly, Volume 65, Issue 3, September 2021, Pages 852–865, https://doi.org/10.1093/isq/sqab029
+
 
 require(shiny)
 require(shinyBS)
@@ -18,12 +16,11 @@ lss <- readRDS("lss.RDS") # from /data/edgar1/kohei/demo/data/threat/lss.RDS
 dict_seed <- quanteda::dictionary(file = "seedwords.yml")
 event <- yaml::read_yaml("events.yml")
 
-# global variable
+# global variables
 country_all <<- get_country(lss)
 country_def <<- c("cn", "ru", "de")
 result <<- data.frame() 
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
 
     # Application title
