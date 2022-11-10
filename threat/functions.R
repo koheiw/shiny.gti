@@ -3,28 +3,33 @@ require(stringi)
 require(ggplot2)
 require(ggrepel)
 
-country_major <- c("de", "ru", "gb", "fr", "jp", "cn", "es")
-country_minor <- c("ir", "iq", "af", "sy", "vn", "cu", "ca", "mx")
+get_country <- function(x) {
+    cc <- levels(x$data$class)
+    m <- countrycode::countrycode(cc, "iso2c", "country.name")
+    cc <- cc[!is.na(m)]
+    names(cc) <- m[!is.na(m)]
+    return(cc[order(names(cc))])
+}
 
-get_gti <- function(x, country = NULL) {
+get_gti <- function(x) {
     
     x <- subset(x, year >= 1861)
-    if (is.null(country))
-        country <- unique(x$class)
+    #if (is.null(country))
+    #    country <- unique(x$class)
     
     x$year_factor <- factor(x$year, seq(1861, 2017))
     x$threat <- x$lss > 0
     
     tb_year <- xtabs(~ year_factor + class + threat, x)
     total <- rowSums(tb_year)
-    tb_year <- tb_year[,country,"TRUE"] / total
-    if (!is.table(tb_year))
-        return(tb_year)
-    result <- as.data.frame(tb_year)
-    colnames(result) <- c("year", "country", "gti")
-    result$year <- as.numeric(as.character(result$year))
-    result$country <- as.character(result$country)
-    return(result)
+    tb_year <- tb_year[,,"TRUE"] / total
+    # if (!is.table(tb_year))
+    #     return(tb_year)
+    temp <- as.data.frame(tb_year)
+    colnames(temp) <- c("year", "country", "gti")
+    temp$year <- as.numeric(as.character(temp$year))
+    temp$country <- as.character(temp$country)
+    return(temp)
 }
 
 smooth_gti <- function(x, m = c(1, 1), sum = FALSE, index = "gti") {
@@ -33,14 +38,14 @@ smooth_gti <- function(x, m = c(1, 1), sum = FALSE, index = "gti") {
     tb_year <- xtabs(index ~ year + country, x)
     if (sum) {
         tb_year <- as.table(as.matrix(rowSums(tb_year)))
-        colnames(tb_year) <- "WORLD"
+        colnames(tb_year) <- "all"
     }
     tb_smo <- as.table(kernapply(tb_year, kernel("daniell", m)))
-    result <- as.data.frame(tb_smo)
-    colnames(result) <- c("year", "country", "index")
-    result$year <- as.numeric(as.character(result$year))
-    result$country <- as.character(result$country)
-    return(result)
+    temp <- as.data.frame(tb_smo)
+    colnames(temp) <- c("year", "country", "index")
+    temp$year <- as.numeric(as.character(temp$year))
+    temp$country <- as.character(temp$country)
+    return(temp)
 }
 
 plot_gti <- function(x, event, country = NULL, index = "gti") {
@@ -48,29 +53,34 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
     if (is.null(country)) {
         country <- unique(x$country)
         sum <- TRUE
+    } else {
+        sum <- FALSE
     }
     x <- x[x$country %in% country,]
     temp <- smooth_gti(x, sum = sum, index = "gti")
-    temp$Index <- temp$index
-    temp$Year <- temp$year
-    temp$Country <- stri_trans_toupper(temp$country)
+    names(temp) <- stri_trans_totitle(names(temp))
     
     label <- data.frame()
     for (m in names(event)) {
-        label <- rbind(label, data.frame(Country = m,
+        label <- rbind(label, data.frame(Country = stri_trans_tolower(m),
                                          Year = unlist(event[[m]]),
-                                         Name = names(unlist(event[[m]])),
+                                         Event = names(unlist(event[[m]])),
                                          stringsAsFactors = FALSE))
     }
-    label$Country <- stri_trans_toupper(label$Country)
-    
     temp <- merge(temp, label, all.x = TRUE)
+    if (all(temp$Country != "all")) {
+        temp$Country <- names(country_all)[match(temp$Country, country_all)]
+    } else {
+        temp$Country <- "All"
+    }
+    
     ggplot(temp, aes(x = Year, y = Index, group = Country)) +
+        ylim(0, max(temp$Index) * 1.2) +
         geom_line(na.rm = TRUE, aes(colour = Country)) +
-        geom_point(aes(y = ifelse(is.na(Name), NA, Index), colour = Country), na.rm = TRUE) +
-        geom_text_repel(aes(x = Year, y = Index, label = Name, colour = Country), 
+        geom_point(aes(y = ifelse(is.na(Event), NA, Index), colour = Country), na.rm = TRUE) +
+        geom_text_repel(aes(x = Year, y = Index, label = Event, colour = Country), 
                         na.rm = TRUE,
-                        min.segment.length = 0.5,
+                        min.segment.length = 0.1,
                         nudge_y = 0.01,
                         force = 10, show.legend = FALSE,
                         segment.alpha = 0.3, direction = "y") +

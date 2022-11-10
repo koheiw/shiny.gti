@@ -18,6 +18,13 @@ lss <- readRDS("lss.RDS") # from /data/edgar1/kohei/demo/data/threat/lss.RDS
 dict_seed <- quanteda::dictionary(file = "seedwords.yml")
 event <- yaml::read_yaml("events.yml")
 
+country_all <- get_country(lss)
+country_def <- c("cn", "ru")
+#country_major <- c("de", "ru", "gb", "fr", "jp", "cn", "es")
+#country_minor <- c("ir", "iq", "af", "sy", "vn", "cu", "ca", "mx")
+
+result <- data.frame() # global variable for the results
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
@@ -27,11 +34,13 @@ ui <- fluidPage(
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
-            h4("Seed words"),
-            selectInput("seedword_type", "Polarity", names(dict_seed)),
+            selectInput("seedword_type", "Seed words", names(dict_seed)),
             textAreaInput("seedwords_pos", "Positive", paste(dict_seed[[1]][[1]], collapse = ", ")),
             textAreaInput("seedwords_neg", "Negative", paste(dict_seed[[1]][[2]], collapse = ", ")),
             actionButton("update", "Update", icon = icon("rotate")),
+            hr(),
+            selectInput("countries", "Countries", country, selected = country_def, multiple = TRUE),
+            actionButton("select", "Select", icon = icon("check")),
             width = 3
         ),
 
@@ -111,11 +120,27 @@ server <- function(input, output, session) {
             
             dat <- quanteda::docvars(lss$data)
             dat$lss <- predict(lss)
-            dat_gti <- get_gti(dat)
-            plot_gti(dat_gti, event, NULL)
+            result <<- get_gti(dat) # update the global variable
+            if (length(input$countries)) {
+                country <- input$countries
+            } else {
+                country <- NULL
+            }
+            plot_gti(result, event, country)
         })
         
     })
+    
+    observeEvent(input$select, {
+        if (length(input$countries)) {
+            country <- input$countries
+        } else {
+            country <- NULL
+        }
+        output$plot_documents <- renderPlot({
+            plot_gti(result, event, country) # use the global variable
+        })
+    })    
     
     # default plots
     output$plot_terms <- renderPlot({
@@ -132,8 +157,14 @@ server <- function(input, output, session) {
         
         dat <- quanteda::docvars(lss$data)
         dat$lss <- predict(lss)
-        dat_gti <- get_gti(dat)
-        plot_gti(dat_gti, event)
+        result <<- get_gti(dat) # update the global variable
+        
+        if (length(input$countries)) {
+            country <- input$countries
+        } else {
+            country <- NULL
+        }
+        plot_gti(result, event, country)
     })
 }
 
