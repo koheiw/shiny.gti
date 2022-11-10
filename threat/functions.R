@@ -3,6 +3,9 @@ require(stringi)
 require(ggplot2)
 require(ggrepel)
 
+#country_major <- c("de", "ru", "gb", "fr", "jp", "cn", "es")
+#country_minor <- c("ir", "iq", "af", "sy", "vn", "cu", "ca", "mx")
+
 get_country <- function(x) {
     cc <- levels(x$data$class)
     m <- countrycode::countrycode(cc, "iso2c", "country.name")

@@ -18,13 +18,10 @@ lss <- readRDS("lss.RDS") # from /data/edgar1/kohei/demo/data/threat/lss.RDS
 dict_seed <- quanteda::dictionary(file = "seedwords.yml")
 event <- yaml::read_yaml("events.yml")
 
-country_all <- get_country(lss)
-country_def <- c("cn", "ru", "de")
-
-#country_major <- c("de", "ru", "gb", "fr", "jp", "cn", "es")
-#country_minor <- c("ir", "iq", "af", "sy", "vn", "cu", "ca", "mx")
-
-result <- data.frame() # global variable for the results
+# global variable
+country_all <<- get_country(lss)
+country_def <<- c("cn", "ru", "de")
+result <<- data.frame() 
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
