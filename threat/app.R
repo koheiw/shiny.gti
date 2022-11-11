@@ -62,6 +62,30 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
     
+    # initialize
+    
+    dat <- quanteda::docvars(lss$data)
+    dat$lss <- predict(lss)
+    result <<- get_gti(dat) # update the global variable
+    
+    output$plot_terms <- renderPlot({
+        
+        set.seed(1234)
+        smp <- sample(names(lss$beta), 50, prob = abs(lss$beta) ^ 2) # random sample from extremes
+        plot_terms(lss, c(names(lss$seeds), smp))
+        
+    })
+    
+    output$plot_documents <- renderPlot({
+        
+        if (length(input$countries)) {
+            country <- input$countries
+        } else {
+            country <- NULL
+        }
+        plot_gti(result, event, country)
+    })
+    
     observeEvent(input$seedword_type, {
         type <- input$seedword_type
         updateTextAreaInput(session, "seedwords_pos", value = paste(dict_seed[[type]][[1]], collapse = ", "))
@@ -138,28 +162,6 @@ server <- function(input, output, session) {
         })
     })    
     
-    # default plots
-    output$plot_terms <- renderPlot({
-
-        set.seed(1234)
-        smp <- sample(names(lss$beta), 50, prob = abs(lss$beta) ^ 2) # random sample from extremes
-        plot_terms(lss, c(names(lss$seeds), smp))
-        
-    })
-    
-    output$plot_documents <- renderPlot({
-        
-        dat <- quanteda::docvars(lss$data)
-        dat$lss <- predict(lss)
-        result <<- get_gti(dat) # update the global variable
-        
-        if (length(input$countries)) {
-            country <- input$countries
-        } else {
-            country <- NULL
-        }
-        plot_gti(result, event, country)
-    })
 }
 
 # Run the application 
