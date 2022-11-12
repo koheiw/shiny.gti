@@ -20,7 +20,7 @@ get_gti <- function(x) {
     #if (is.null(country))
     #    country <- unique(x$class)
     
-    x$year_factor <- factor(x$year, seq(1861, 2017))
+    x$year_factor <- factor(x$year, seq(1861, 2022))
     x$threat <- x$lss > 0
     
     tb_year <- xtabs(~ year_factor + class + threat, x)

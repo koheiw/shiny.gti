@@ -95,16 +95,22 @@ server <- function(input, output, session) {
     observeEvent(input$update, {
         
         closeAlert(session, alertId = "seedwords")
-        updateTabsetPanel(session, 'tabs', selected = "tab_terms")
+        #updateTabsetPanel(session, 'tabs', selected = "tab_terms")
         
         lis <- stri_split_fixed(c(input$seedwords_pos, input$seedwords_neg), ",")
         lis <- lapply(lis, function(x) {
             x <- stri_trim(x)
             x[nzchar(x)]
         })
-        seed <- as.seedwords(lis)
+        seed <- as.seedwords(lis, concatenator = " ")
+        seeds_fixed <- object2fixed(names(seed), colnames(lss$embedding), valuetype = "glob")
+        if (length(seeds_fixed) > 1000) {
+            createAlert(session, anchorId = "alert", alertId = "seedwords",
+                        content = "Too many seed words are provided.", style = "danger", dismiss = FALSE)
+            return()
+        }
         
-        ignore <- setdiff(names(seed), colnames(lss$embedding))
+        ignore <- setdiff(names(seed), names(seeds_fixed))
         if (length(ignore)) {
             if (length(ignore) == 1) {
                 msg <- paste(paste0('"', ignore, '"', collapse = ", "), "is not found.")
@@ -124,7 +130,11 @@ server <- function(input, output, session) {
         })
         if (is.null(lss))
             return()
-
+        
+        dat <- quanteda::docvars(lss$data)
+        dat$lss <- predict(lss)
+        result <<- get_gti(dat) # update the global variable
+        
         #output$warning_pos <- renderText()
         output$plot_terms <- renderPlot({
             
