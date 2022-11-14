@@ -143,7 +143,7 @@ plot_terms <- function(x, highlighted = NULL, max_words = 10000) {
     temp_black <- subset(temp, is_hl)
     temp_gray <- subset(temp, !is_hl & is_sm)
     ggplot(data = temp_gray, aes(x = beta, y = frequency, label = word)) +
-        geom_text(colour = "grey70", alpha = 0.7) +
+        geom_text(colour = "grey70", alpha = 0.7, aes(size = 4), show.legend = FALSE) +
         labs(x = "Polarity", y = "Frequency (log)") +
         theme_bw() +
         theme(panel.grid= element_blank(),
