@@ -63,10 +63,12 @@ ui <- fluidPage(
 server <- function(input, output, session) {
     
     # initialize
-    
     dat <- quanteda::docvars(lss$data)
     dat$lss <- predict(lss)
     result <<- get_gti(dat) # update the global variable
+    
+    # save for wireframe
+    #saveRDS(result, "/data/lqe/kohei/demo/result/threat/data_index.RDS")
     
     output$plot_terms <- renderPlot({
         
