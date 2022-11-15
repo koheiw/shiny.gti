@@ -18,13 +18,14 @@ event <- yaml::read_yaml("events.yml")
 
 # global variables
 country_all <<- get_country(lss)
-country_def <<- c("cn", "ru", "de")
+country_def <<- c("iq", "vn", "de")
 result <<- data.frame() 
 
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Geopolitical Analysis through the New York Times"),
+    titlePanel("Geopolitical Threat Index"),
+    p("Analysis of New York Times articles on military threats using Latent Semantic Scaling"),
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(

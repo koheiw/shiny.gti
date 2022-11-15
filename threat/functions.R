@@ -25,7 +25,9 @@ get_gti <- function(x) {
     
     tb_year <- xtabs(~ year_factor + class + threat, x)
     total <- rowSums(tb_year)
+    
     tb_year <- tb_year[,,"TRUE"] / total
+    
     # if (!is.table(tb_year))
     #     return(tb_year)
     temp <- as.data.frame(tb_year)
