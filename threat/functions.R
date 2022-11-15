@@ -88,8 +88,9 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
         geom_point(aes(y = ifelse(is.na(Event), NA_integer_, Index), colour = Country), na.rm = TRUE) +
         geom_text_repel(aes(x = Year, y = Index, label = Event, colour = Country, size = 4), 
                         na.rm = TRUE,
-                        min.segment.length = 0.1,
-                        nudge_y = 0.01,
+                        #min.segment.length = max(temp$Index) / 10,
+                        nudge_y = max(temp$Index) / 10,
+                        #nudge_y = 0.01,
                         force = 10, show.legend = FALSE,
                         segment.alpha = 0.3, direction = "y") +
         ylab("Index") +
