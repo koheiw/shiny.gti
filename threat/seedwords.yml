@@ -1,18 +1,16 @@
-hostility:
+Hostility:
     high: ["adversary", "adversaries", "enemy", "enemies", "foe", "foes", "hostile"]
     low: ["aid", "aids", "friends", "friend", "ally", "allies", "peaceful"]
-democracy:
-    high: democracy
-    low: autocracy, totalitarian
-capitalism:
-    high: capitalism
-    low: communism
-religiosity:
-    high: religious
-    low: secular
-navy:
-    high: navy
-    low: army
-alive:
-    high: ["alive", "healthy"]
-    low: ["die", "injured"]
+Terrorism:  
+    high: [terrorism, terrorist*, extremism, extremist*]
+    low: []
+Nuclear:
+    high: [nuclear, atomic, plutonium, uranium]
+    low: []
+Regime:
+    high: [dictatorship, totalitarian, autocracy, communism, socialism, fascism]
+    low: [democracy, democratic, liberalism, capitalism]
+Custom:
+    high: []
+    low: []
+
