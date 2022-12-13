@@ -45,7 +45,13 @@ smooth_gti <- function(x, m = c(1, 1), sum = FALSE, index = "gti") {
         tb_year <- as.table(as.matrix(rowSums(tb_year)))
         colnames(tb_year) <- "all"
     }
-    tb_smo <- as.table(kernapply(tb_year, kernel("daniell", m)))
+    
+    #tb_smo <- as.table(kernapply(tb_year, kernel("daniell", m))) # original
+    tb_smo <- as.table(apply(tb_year, 2, function(y, x) {
+        ksmooth(x, y, "normal", bandwidth = 3)$y
+    }, x = as.integer(rownames(tb_year))))
+    dimnames(tb_smo) <- dimnames(tb_year)
+    
     temp <- as.data.frame(tb_smo)
     colnames(temp) <- c("year", "country", "index")
     temp$year <- as.numeric(as.character(temp$year))
