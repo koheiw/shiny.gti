@@ -51,7 +51,7 @@ smooth_gti <- function(x, m = c(1, 1), sum = FALSE, index = "gti") {
         ksmooth(x, y, "normal", bandwidth = 3)$y
     }, x = as.integer(rownames(tb_year))))
     dimnames(tb_smo) <- dimnames(tb_year)
-    
+
     temp <- as.data.frame(tb_smo)
     colnames(temp) <- c("year", "country", "index")
     temp$year <- as.numeric(as.character(temp$year))
@@ -87,7 +87,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
     } else {
         temp$Country <- factor("All")
     }
-    
+    year_last <- max(temp$Year)
     ggplot(temp, aes(x = Year, y = Index, group = Country)) +
         ylim(0, max(temp$Index) * 1.2) +
         geom_line(na.rm = TRUE, aes(colour = Country)) +
@@ -100,7 +100,7 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
                         force = 10, show.legend = FALSE,
                         segment.alpha = 0.3, direction = "y") +
         ylab("Index") +
-        scale_x_continuous(limits = c(1860, 2020), breaks = seq(1860, 2020, 20)) +
+        scale_x_continuous(limits = c(1860, year_last), breaks = seq(1860, year_last, 20)) +
         theme_bw() +
         theme(text = element_text(size = 13, colour = "black"),
               legend.position = "top",
