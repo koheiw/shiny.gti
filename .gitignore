@@ -3,3 +3,4 @@
 .Ruserdata
 *.RData
 *.RDS
+settings.R
