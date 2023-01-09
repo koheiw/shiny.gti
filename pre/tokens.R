@@ -1,4 +1,5 @@
 require(quanteda)
+require(quanteda.textstats)
 require(stringi)
 source("settings.R")
 
@@ -11,13 +12,13 @@ title <- c('Mr', 'Ms', 'Mrs', "Dr", "Gen")
 corp <- readRDS("pre/corpus.RDS")
 
 # remove by-line
-texts(corp) <- stri_replace_all_regex(texts(corp), "^[\\p{Lu}\\p{Z}]+(.{0,30}?)(\\(.{0,50}?\\))?(--)", "")
+corp[] <- stri_replace_all_regex(corp, "^[\\p{Lu}\\p{Z}]+(.{0,30}?)(\\(.{0,50}?\\))?(--)", "")
 
 # normalize old typograpy
-texts(corp) <- stri_replace_all_regex(texts(corp), "\\w+\\.\\.\\.$", "") # truncated word
-texts(corp) <- stri_replace_all_regex(texts(corp), "([A-Z])\\.", "$1") # acronyms
-texts(corp) <- stri_replace_all_fixed(texts(corp), "-", " ") # old multi-words expression
-texts(corp) <- stri_replace_all_fixed(texts(corp), "'", " ") # posession
+corp[] <- stri_replace_all_regex(corp, "\\w+\\.\\.\\.$", "") # truncated word
+corp[] <- stri_replace_all_regex(corp, "([A-Z])\\.", "$1") # acronyms
+corp[] <- stri_replace_all_fixed(corp, "-", " ") # old multi-words expression
+corp[] <- stri_replace_all_fixed(corp, "'", " ") # posession
 
 toks <- tokens(corp) %>% 
     tokens_remove(c(stopwords(), stri_trans_totitle(stopwords())), 
