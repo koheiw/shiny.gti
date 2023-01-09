@@ -25,7 +25,7 @@ ui <- fluidPage(
 
     # Application title
     titlePanel("Geopolitical Threat Index"),
-    p("Analysis of New York Times articles on military threats using Latent Semantic Scaling"),
+    p("Identifying foreign threats through an anaysis of New York Times articles on military over 160 years"),
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
@@ -52,9 +52,9 @@ ui <- fluidPage(
                         h3("About the app"),
                         markdown("
                         This is an online app that allow you to compute, visualize and download the Geopolitial Threat Index (GTI) between 1981 and 2022.
-                        The GTI is produce by applying the Latent Semantic Scaling to a corpus of New York Times summaries.
-                        The original study we published in 2021 only covered from 1981 to 2017 but we extended to 2022 to include recent events.
-                        This app also allow users to choose custom seed words to demonstrate the strength of the LSS algorithm.
+                        The GTI is produce by applying the Latent Semantic Scaling to a corpus of lead sentences from the of New York Times artciles about militaries.
+                        The original study (Trubowitz and Watanabe, 2021) covered only from 1981 to 2017 but this app extends to 2022.
+                        It also allows users to enter custom seed words to experience the efficiency and the flexibility of the LSS algorithm (Watanabe, 2021).
                         Please read the papers listed below for the methodology.
                         "),
                         h3("How to use"),
@@ -70,9 +70,9 @@ ui <- fluidPage(
                         h3("References"),
                         markdown("
                         - Peter Trubowitz, Kohei Watanabe (2021), The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats.
-                        *International Studies Quarterly*, [https://doi.org/10.1093/isq/sqab029](https://doi.org/10.1093/isq/sqab029)
+                        *International Studies Quarterly*, [https://doi.org/10.1093/isq/sqab029](https://doi.org/10.1093/isq/sqab029).
                         - Kohei Watanabe (2021) Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
-                        *Communication Methods and Measures*, [https://doi.org/10.1080/19312458.2020.1832976](https://doi.org/10.1080/19312458.2020.1832976)
+                        *Communication Methods and Measures*, [https://doi.org/10.1080/19312458.2020.1832976](https://doi.org/10.1080/19312458.2020.1832976).
                         "),
                         h3("Feedback"),
                         markdown("
