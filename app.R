@@ -63,17 +63,18 @@ ui <- fluidPage(
                            We only used 'Hostility' is the original study but added 'Terrism', 'Nuclear' and 'Regime' as examples.
                         1. Click **Update** to reflect changes in seed words.
                         1. Open the *Polarity words* tab and inspect the polarity of words.
-                        1. Type  the names of countries of your interest in **Countries**.
+                        1. Type the names of countries of your interest in **Countries**. If the box is blank, it shows the gloabl index. 
                         1. Click **Select**.
                         1. Open the *Historical trends* tab and study the changes in the index.
-                        1. Tick **Show event labels** to added even labels to the trend plot. 
-                           Note that only key countries discussed in the original paper have such labels.
+                        1. Tick **Show event labels** to highlight key evens in the trend plot. 
+                           We have event lables only for 14 countries discussed in the original paper:
+                           (Russia, China, Germany, Japan, France, United Kingdom, Cuba, Spain, Mexico, Vietnam, Iran, Iraq, Afghanistan, Syria).
                         "),
                         h3("References"),
                         markdown("
-                        - Peter Trubowitz, Kohei Watanabe (2021). The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats.
+                        - Trubowitz, P. & Watanabe, K. (2021). The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats.
                         *International Studies Quarterly*, https://doi.org/10.1093/isq/sqab029.
-                        - Kohei Watanabe (2021). Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
+                        - Watanabe, K. (2021). Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
                         *Communication Methods and Measures*, https://doi.org/10.1080/19312458.2020.1832976.
                         "),
                         h3("Feedback"),
