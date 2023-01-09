@@ -59,20 +59,22 @@ ui <- fluidPage(
                         "),
                         h3("How to use"),
                         markdown("
-                        1. Select from **Seed words**. Seed words in **High** and **Low* should be keywords related to the higher and lower GTI scores, respectively. 
+                        1. Select from **Seed words**. Seed words in **High** and **Low** should be keywords related to the higher and lower GTI scores, respectively. 
                            We only used 'Hostility' is the original study but added 'Terrism', 'Nuclear' and 'Regime' as examples.
                         1. Click **Update** to reflect changes in seed words.
-                        1. Open the Polarity words tab and inspect the polarity of words.
+                        1. Open the *Polarity words* tab and inspect the polarity of words.
                         1. Type  the names of countries of your interest in **Countries**.
                         1. Click **Select**.
-                        1. Open the Trend tab and study the changes in the scores.
+                        1. Open the *Historical trends* tab and study the changes in the index.
+                        1. Tick **Show event labels** to added even labels to the trend plot. 
+                           Note that only key countries discussed in the original paper have such labels.
                         "),
                         h3("References"),
                         markdown("
-                        - Peter Trubowitz, Kohei Watanabe (2021), The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats.
-                        *International Studies Quarterly*, [https://doi.org/10.1093/isq/sqab029](https://doi.org/10.1093/isq/sqab029).
-                        - Kohei Watanabe (2021) Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
-                        *Communication Methods and Measures*, [https://doi.org/10.1080/19312458.2020.1832976](https://doi.org/10.1080/19312458.2020.1832976).
+                        - Peter Trubowitz, Kohei Watanabe (2021). The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats.
+                        *International Studies Quarterly*, https://doi.org/10.1093/isq/sqab029.
+                        - Kohei Watanabe (2021). Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
+                        *Communication Methods and Measures*, https://doi.org/10.1080/19312458.2020.1832976.
                         "),
                         h3("Feedback"),
                         markdown("
@@ -94,7 +96,10 @@ ui <- fluidPage(
                     title = "Download",
                     value = "tab_documents",
                     fluidRow(
-                        p("You can download the raw data in the CSV format for your research. Please inlcude all the seed words your used to create the index when you publish your research"),
+                        markdown("
+                        You can download the raw data in the CSV format for your research. 
+                        Please inlcude all the seed words your used to create the index when you publish your research.
+                        "),
                         downloadButton("download", "Download GTI"),
                     style = "padding-top:20px")
                 )
