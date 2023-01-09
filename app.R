@@ -36,6 +36,7 @@ ui <- fluidPage(
             actionButton("update", "Update", icon = icon("rotate")),
             hr(),
             selectInput("countries", "Countries", country_all, selected = country_def, multiple = TRUE),
+            checkboxInput("labels", "Show event labels", value = TRUE),
             actionButton("select", "Select", icon = icon("check")),
             width = 3
         ),
@@ -46,6 +47,40 @@ ui <- fluidPage(
             tabsetPanel(
                 id = "tabs",
                 tabPanel(
+                    title = "Introduction",
+                    fluidRow(
+                        h3("About the app"),
+                        markdown("
+                        This is an online app that allow you to compute, visualize and download the Geopolitial Threat Index (GTI) between 1981 and 2022.
+                        The GTI is produce by applying the Latent Semantic Scaling to a corpus of New York Times summaries.
+                        The original study we published in 2021 only covered from 1981 to 2017 but we extended to 2022 to include recent events.
+                        This app also allow users to choose custom seed words to demonstrate the strength of the LSS algorithm.
+                        Please read the papers listed below for the methodology.
+                        "),
+                        h3("How to use"),
+                        markdown("
+                        1. Select from **Seed words**. Seed words in **High** and **Low* should be keywords related to the higher and lower GTI scores, respectively. 
+                           We only used 'Hostility' is the original study but added 'Terrism', 'Nuclear' and 'Regime' as examples.
+                        1. Click **Update** to reflect changes in seed words.
+                        1. Open the Polarity words tab and inspect the polarity of words.
+                        1. Type  the names of countries of your interest in **Countries**.
+                        1. Click **Select**.
+                        1. Open the Trend tab and study the changes in the scores.
+                        "),
+                        h3("References"),
+                        markdown("
+                        - Peter Trubowitz, Kohei Watanabe (2021), The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats.
+                        *International Studies Quarterly*, [https://doi.org/10.1093/isq/sqab029](https://doi.org/10.1093/isq/sqab029)
+                        - Kohei Watanabe (2021) Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
+                        *Communication Methods and Measures*, [https://doi.org/10.1080/19312458.2020.1832976](https://doi.org/10.1080/19312458.2020.1832976)
+                        "),
+                        h3("Feedback"),
+                        markdown("
+                        If you have questions or suggests, please write to [Kohei Watanabe](watanabe.kohei@gmail.com).
+                        "),
+                    style = "padding-top:20px")
+                ),
+                tabPanel(
                     title = "Polarity words",
                     value = "tab_terms",
                     plotOutput("plot_terms", height = 500)
@@ -54,6 +89,14 @@ ui <- fluidPage(
                     title = "Historical trends",
                     value = "tab_documents",
                     plotOutput("plot_documents", height = 500)
+                ),
+                tabPanel(
+                    title = "Download",
+                    value = "tab_documents",
+                    fluidRow(
+                        p("You can download the raw data in the CSV format for your research. Please inlcude all the seed words your used to create the index when you publish your research"),
+                        downloadButton("download", "Download GTI"),
+                    style = "padding-top:20px")
                 )
             )
         )
@@ -86,7 +129,7 @@ server <- function(input, output, session) {
         } else {
             country <- NULL
         }
-        plot_gti(result, event, country)
+        plot_gti(result, event, country, show_label = input$labels)
     })
     
     observeEvent(input$seedword_type, {
@@ -156,7 +199,7 @@ server <- function(input, output, session) {
             } else {
                 country <- NULL
             }
-            plot_gti(result, event, country)
+            plot_gti(result, event, country, show_label = input$labels)
         })
         
     })
@@ -171,9 +214,18 @@ server <- function(input, output, session) {
             country <- NULL
         }
         output$plot_documents <- renderPlot({
-            plot_gti(result, event, country) # use the global variable
+            plot_gti(result, event, country, show_label = input$labels) # use the global variable
         })
-    })    
+    })
+    
+    output$download <- downloadHandler(
+        filename = function() {
+            paste("gti.csv", sep = "")
+        },
+        content = function(file) {
+            write.csv(result, file, row.names = FALSE)
+        }
+    )
     
 }
 

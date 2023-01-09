@@ -59,7 +59,7 @@ smooth_gti <- function(x, m = c(1, 1), sum = FALSE, index = "gti") {
     return(temp)
 }
 
-plot_gti <- function(x, event, country = NULL, index = "gti") {
+plot_gti <- function(x, event, country = NULL, index = "gti", show_label = TRUE) {
     
     if (is.null(country)) {
         country <- unique(x$country)
@@ -72,11 +72,13 @@ plot_gti <- function(x, event, country = NULL, index = "gti") {
     names(temp) <- stri_trans_totitle(names(temp))
     
     label <- data.frame(Country = character(), Year = integer(), Event = character())
-    for (m in names(event)) {
-        label <- rbind(label, data.frame(Country = stri_trans_tolower(m),
-                                         Year = unlist(event[[m]]),
-                                         Event = names(unlist(event[[m]])),
-                                         stringsAsFactors = FALSE))
+    if (show_label) {
+        for (m in names(event)) {
+            label <- rbind(label, data.frame(Country = stri_trans_tolower(m),
+                                             Year = unlist(event[[m]]),
+                                             Event = names(unlist(event[[m]])),
+                                             stringsAsFactors = FALSE))
+        }
     }
     temp <- merge(temp, label, all.x = TRUE)
     if (all(temp$Country != "all")) {
