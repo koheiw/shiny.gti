@@ -2,7 +2,6 @@ require(quanteda)
 require(newsmap)
 require(LSX)
 source("settings.R")
-options(lss_cache_dir = DIR_CACHE)
 
 toks <- readRDS("pre/tokens.RDS")
 
@@ -34,7 +33,7 @@ dfmt <- toks %>%
     dfm_trim(min_termfreq = 10)
 
 seed <- as.seedwords(dict_seed$Hostility)
-lss <- textmodel_lss(dfmt, seed, cache = TRUE, weight = "logcount", include_data = TRUE)
+lss <- textmodel_lss(dfmt, seed, weight = "logcount", include_data = TRUE)
 
 saveRDS(lss, "lss.RDS")
 
