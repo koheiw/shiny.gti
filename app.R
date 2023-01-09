@@ -53,9 +53,8 @@ ui <- fluidPage(
                         markdown("
                         This is an online app that allow you to compute, visualize and download the Geopolitial Threat Index (GTI) between 1981 and 2022.
                         The GTI is produce by applying the Latent Semantic Scaling to a corpus of lead sentences from the of New York Times artciles about militaries.
-                        The original study (Trubowitz and Watanabe, 2021) covered only from 1981 to 2017 but this app extends to 2022.
+                        The original study (Trubowitz & Watanabe, 2021) covered only from 1981 to 2017 but this app extends to 2022.
                         It also allows users to enter custom seed words to experience the efficiency and the flexibility of the LSS algorithm (Watanabe, 2021).
-                        Please read the papers listed below for the methodology.
                         "),
                         h3("How to use"),
                         markdown("
