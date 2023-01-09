@@ -4,7 +4,7 @@ require(LSX)
 source("settings.R")
 options(lss_cache_dir = DIR_CACHE)
 
-toks <- readRDS(paste0(DIR_DATA, "tokens_nytimes_summary.RDS"))
+toks <- readRDS("pre/tokens.RDS")
 
 # newsmap -----------------------------------------------
 
@@ -33,7 +33,7 @@ dfmt <- toks %>%
     dfm() %>% 
     dfm_trim(min_termfreq = 10)
 
-seed <- as.seedwords(dict_seed$hostility)
+seed <- as.seedwords(dict_seed$Hostility)
 lss <- textmodel_lss(dfmt, seed, cache = TRUE, weight = "logcount", include_data = TRUE)
 
 saveRDS(lss, "lss.RDS")
