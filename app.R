@@ -51,23 +51,27 @@ ui <- fluidPage(
                     fluidRow(
                         h3("About the app"),
                         markdown("
-                        This is an online app that allow you to compute, visualize and download the Geopolitial Threat Index (GTI) between 1981 and 2022.
-                        The GTI is produce by applying the Latent Semantic Scaling to a corpus of lead sentences from the of New York Times artciles about militaries.
+                        This is an online app that allow you to compute, visualize and download the Geopolitical Threat Index (GTI) between 1981 and 2022.
+                        The GTI is produce by applying Latent Semantic Scaling to a corpus of lead sentences from the of New York Times articles about militaries.
                         The original study (Trubowitz & Watanabe, 2021) covered only from 1981 to 2017 but this app extends to 2022.
                         It also allows users to enter custom seed words to experience the efficiency and the flexibility of the LSS algorithm (Watanabe, 2021).
                         "),
                         h3("How to use"),
                         markdown("
-                        1. Select from **Seed words**. Seed words in **High** and **Low** should be keywords related to the higher and lower GTI scores, respectively. 
-                           We only used 'Hostility' is the original study but added 'Terrism', 'Nuclear' and 'Regime' as examples.
+                        1. Select **Seed words**. Seed words in **High** and **Low** should be keywords related to the higher and lower GTI scores, respectively. 
+                           We only used 'Hostility' in the original study but added 'Terrorism', 'Nuclear' and 'Regime' as examples.
                         1. Click **Update** to reflect changes in seed words.
                         1. Open the *Polarity words* tab and inspect the polarity of words.
-                        1. Type the names of countries of your interest in **Countries**. If the box is blank, it shows the gloabl index. 
+                        1. Type the names of countries of your interest in **Countries**. If the box is blank, it shows the global index. 
                         1. Click **Select**.
                         1. Open the *Historical trends* tab and study the changes in the index.
                         1. Tick **Show event labels** to highlight key evens in the trend plot. 
-                           We have event lables only for 14 countries discussed in the original paper:
+                           We have event labels only for 14 countries discussed in the original paper:
                            (Russia, China, Germany, Japan, France, United Kingdom, Cuba, Spain, Mexico, Vietnam, Iran, Iraq, Afghanistan, Syria).
+                        "),
+                        h3("Feedback"),
+                        markdown("
+                        If you have questions or suggests, please write to [Kohei Watanabe](watanabe.kohei@gmail.com).
                         "),
                         h3("References"),
                         markdown("
@@ -76,11 +80,7 @@ ui <- fluidPage(
                         - Watanabe, K. (2021). Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages, 
                         *Communication Methods and Measures*, https://doi.org/10.1080/19312458.2020.1832976.
                         "),
-                        h3("Feedback"),
-                        markdown("
-                        If you have questions or suggests, please write to [Kohei Watanabe](watanabe.kohei@gmail.com).
-                        "),
-                    style = "padding-top:20px")
+                    style = "padding:20px")
                 ),
                 tabPanel(
                     title = "Polarity words",
@@ -101,7 +101,7 @@ ui <- fluidPage(
                         Please inlcude all the seed words your used to create the index when you publish your research.
                         "),
                         downloadButton("download", "Download GTI"),
-                    style = "padding-top:20px")
+                    style = "padding:20px")
                 )
             )
         )
