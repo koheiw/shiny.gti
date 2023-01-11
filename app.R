@@ -48,6 +48,7 @@ ui <- fluidPage(
                 id = "tabs",
                 tabPanel(
                     title = "Introduction",
+                    value = "tab_intro",
                     fluidRow(
                         h3("About the app"),
                         markdown("
@@ -66,7 +67,7 @@ ui <- fluidPage(
                         1. Click **Select**.
                         1. Open the *Historical trends* tab and study the changes in the index.
                         1. Tick **Show event labels** to highlight key evens in the trend plot. 
-                           We have event labels only for 14 countries discussed in the original paper:
+                           We have event labels only for 14 countries discussed in the original paper 
                            (Russia, China, Germany, Japan, France, United Kingdom, Cuba, Spain, Mexico, Vietnam, Iran, Iraq, Afghanistan, Syria).
                         "),
                         h3("Feedback"),
@@ -89,12 +90,12 @@ ui <- fluidPage(
                 ),
                 tabPanel(
                     title = "Historical trends",
-                    value = "tab_documents",
-                    plotOutput("plot_documents", height = 500)
+                    value = "tab_trends",
+                    plotOutput("plot_trends", height = 500)
                 ),
                 tabPanel(
                     title = "Download",
-                    value = "tab_documents",
+                    value = "tab_download",
                     fluidRow(
                         markdown("
                         You can download the raw data in the CSV format for your research. 
@@ -127,7 +128,7 @@ server <- function(input, output, session) {
         
     })
     
-    output$plot_documents <- renderPlot({
+    output$plot_trends <- renderPlot({
         
         if (length(input$countries)) {
             country <- input$countries
@@ -146,6 +147,7 @@ server <- function(input, output, session) {
     observeEvent(input$update, {
         
         closeAlert(session, alertId = "seedwords")
+        #if (input$tabs == "tab_intro")
         #updateTabsetPanel(session, 'tabs', selected = "tab_terms")
         
         lis <- stri_split_fixed(c(input$seedwords_pos, input$seedwords_neg), ",")
@@ -194,7 +196,7 @@ server <- function(input, output, session) {
             plot_terms(lss, c(names(lss$seeds), smp))
         })
         
-        output$plot_documents <- renderPlot({
+        output$plot_trends <- renderPlot({
             
             dat <- quanteda::docvars(lss$data)
             dat$lss <- predict(lss)
@@ -211,14 +213,14 @@ server <- function(input, output, session) {
     
     observeEvent(input$select, {
         
-        updateTabsetPanel(session, 'tabs', selected = "tab_documents")
+        updateTabsetPanel(session, 'tabs', selected = "tab_trends")
         
         if (length(input$countries)) {
             country <- input$countries
         } else {
             country <- NULL
         }
-        output$plot_documents <- renderPlot({
+        output$plot_trends <- renderPlot({
             plot_gti(result, event, country, show_label = input$labels) # use the global variable
         })
     })
