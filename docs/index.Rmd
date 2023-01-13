@@ -1,5 +1,6 @@
 ---
-title: "About Interactive GTI App"
+title: "Geopolitical Threat Index"
+subtitle: "Identifying foreign threats through an anaysis of New York Times articles on military over 160 years"
 output: html_document
 date: "2023-01-13"
 ---
@@ -8,6 +9,24 @@ date: "2023-01-13"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Link
 
-[Interactive GTI App](https://lazardlab.shinyapps.io/gti160/)
+### About the app
+
+This is an online app that allow you to compute, visualize and download the Geopolitical Threat Index (GTI) between 1981 and 2022.
+The GTI is produce by applying Latent Semantic Scaling to a corpus of lead sentences from the of New York Times articles about militaries.
+The original study (Trubowitz & Watanabe, 2021) covered only from 1981 to 2017 but this app extends to 2022.
+It also allows users to enter custom seed words to experience the efficiency and the flexibility of the LSS algorithm (Watanabe, 2021).
+
+<button name="button" onclick="https://lazardlab.shinyapps.io/gti160/">Launch GTI App</button>
+
+### Feedback
+
+If you have questions or suggests, please write to [Kohei Watanabe](watanabe.kohei@gmail.com).
+
+### References
+
+- Trubowitz, P. & Watanabe, K. (2021). The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats. *International Studies Quarterly*, https://doi.org/10.1093/isq/sqab029.
+- Watanabe, K. (2021). Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages,*Communication Methods and Measures*, https://doi.org/10.1080/19312458.2020.1832976.
+
+
+
