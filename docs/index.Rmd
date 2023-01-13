@@ -17,7 +17,9 @@ The GTI is produce by applying Latent Semantic Scaling to a corpus of lead sente
 The original study (Trubowitz & Watanabe, 2021) covered only from 1981 to 2017 but this app extends to 2022.
 It also allows users to enter custom seed words to experience the efficiency and the flexibility of the LSS algorithm (Watanabe, 2021).
 
-<button name="button" onclick="https://lazardlab.shinyapps.io/gti160/">Launch GTI App</button>
+<form action="https://lazardlab.shinyapps.io/gti160/" method="get" target="_blank">
+<button type="submit">Launch GTI App</button>
+</form>
 
 ### Feedback
 
@@ -28,5 +30,6 @@ If you have questions or suggests, please write to [Kohei Watanabe](watanabe.koh
 - Trubowitz, P. & Watanabe, K. (2021). The Geopolitical Threat Index: A Text-Based Computational Approach to Identifying Foreign Threats. *International Studies Quarterly*, https://doi.org/10.1093/isq/sqab029.
 - Watanabe, K. (2021). Latent Semantic Scaling: A Semisupervised Text Analysis Technique for New Domains and Languages,*Communication Methods and Measures*, https://doi.org/10.1080/19312458.2020.1832976.
 
+<button name="button" onclick="https://lazardlab.shinyapps.io/gti160/"Launch GTI App</button>
 
 
