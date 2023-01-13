@@ -1,0 +1,13 @@
+---
+title: "About Interactive GTI App"
+output: html_document
+date: "2023-01-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Link
+
+[Interactive GTI App](https://lazardlab.shinyapps.io/gti160/)
